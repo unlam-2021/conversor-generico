@@ -9,7 +9,7 @@
  * @author flescano
  */
 public abstract class Converter {
-    Double unit = 1D;
+    Double unit = 1D; // Los hijos deben sobrescribir este valor. 
     
     public Double convertTo(Double value) {
         return value*unit;

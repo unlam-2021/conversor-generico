@@ -25,12 +25,14 @@ public class ConverterController {
     private static Map<String, Labels> labels = new HashMap<String, Labels>();
 
     public ConverterController() {
+        // Instanciamos los posibles converters.
         convertInstances.put(METROS_CENTIMETROS, new MetrosCentimetrosConverter());
         convertInstances.put(CENTIMETROS_PULGADAS, new CentimetrosPulgadasConverter());
         convertInstances.put(LIBRAS_KILOGRAMOS, new LibrasKilogramosConverter());
         convertInstances.put(LITROS_GALONES, new LitrosGalonesConverter());
         convertInstances.put(METROS_PIES, new MetrosPiesConverter());
         
+        // Instanciamos los labels especificos para cada converter.
         labels.put(METROS_CENTIMETROS, new Labels("Metros", "Centimetros"));
         labels.put(CENTIMETROS_PULGADAS, new Labels("Centimetros", "Pulgadas"));
         labels.put(LIBRAS_KILOGRAMOS, new Labels("Libras", "Kilogramos"));

@@ -22,6 +22,7 @@ public class Conversor extends javax.swing.JFrame {
         setTitle("Conversor Generico");
         setLocationRelativeTo(null);
         
+        // Agregamos las posibles opciones al combobox.
         for (String option : converterController.getOptions()) {
             jComboBoxMedidas.addItem(option);
         }
@@ -29,6 +30,7 @@ public class Conversor extends javax.swing.JFrame {
         setLabels();
     }
     
+    // Cambia los lables segun lo que este seleccionado en el combobox.
     private void setLabels() {
        String selectedOption = (String) jComboBoxMedidas.getSelectedItem();
        Labels labels = converterController.getCLabels(selectedOption);
@@ -59,11 +61,6 @@ public class Conversor extends javax.swing.JFrame {
                 jComboBoxMedidasItemStateChanged(evt);
             }
         });
-        jComboBoxMedidas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxMedidasActionPerformed(evt);
-            }
-        });
 
         jTextFieldArriba.setText("0.0");
         jTextFieldArriba.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -73,11 +70,6 @@ public class Conversor extends javax.swing.JFrame {
         });
 
         jTextFieldAbajo.setText("0.0");
-        jTextFieldAbajo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextFieldAbajoFocusLost(evt);
-            }
-        });
         jTextFieldAbajo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldAbajoKeyPressed(evt);
@@ -144,12 +136,9 @@ public class Conversor extends javax.swing.JFrame {
         convert();
     }//GEN-LAST:event_jButtonConvertirActionPerformed
 
-    private void jComboBoxMedidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMedidasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxMedidasActionPerformed
-
     private void jTextFieldArribaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldArribaKeyPressed
         if(!convertTo){
+            // Si escribe al menos un caracter en el field de arriba entonces quiere hacer el camino "standard"
             convertTo = true;
             cleanField(jTextFieldAbajo);
         }
@@ -161,7 +150,8 @@ public class Conversor extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldArribaKeyPressed
 
     private void jTextFieldAbajoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAbajoKeyPressed
-        if(convertTo ){
+        if(convertTo) {
+            // Si escribio al menos un caracter en el field de abajo entonces quire hacer el camino inveso.
             convertTo = false;
             cleanField(jTextFieldArriba);
         }
@@ -172,10 +162,6 @@ public class Conversor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldAbajoKeyPressed
 
-    private void jTextFieldAbajoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextFieldAbajoFocusLost
-        convertTo = false;
-    }//GEN-LAST:event_jTextFieldAbajoFocusLost
-
     private void jComboBoxMedidasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxMedidasItemStateChanged
         setLabels();
     }//GEN-LAST:event_jComboBoxMedidasItemStateChanged
@@ -185,13 +171,16 @@ public class Conversor extends javax.swing.JFrame {
     }
     
     public void convert() {
-        String item = (String)jComboBoxMedidas.getSelectedItem();
+        // Tomamos el item seleccionado
+        String item = (String) jComboBoxMedidas.getSelectedItem();
+        
+        // Buscamo el converter especifico para esa opcion.
         Converter converter = converterController.getConverter(item);
         
         Double originalValue;
-  
         Double convertedValue;
         
+        // Dependiendo del flag convertimo para uno u otro lado
         if(convertTo) {
             originalValue = getDoubleFromField(jTextFieldArriba);
             convertedValue = converter.convertTo(originalValue);
@@ -203,10 +192,11 @@ public class Conversor extends javax.swing.JFrame {
         }
     }
     
-    // Siempre retorna un valor, aunque haya un error. 
+    // Siempre retorna un valor, cuando hay un error 0.0. 
     public Double getDoubleFromField(javax.swing.JTextField field) {
         Double parsedValue = 0D;
         
+        // Sacamos espacios, reemplazamos la coma y pasamos a mayusculas para validar.
         String fieldText = field.getText().trim().replace(",", ".").toUpperCase();
         
         if(fieldText.contains("D") || fieldText.contains("F")) {
